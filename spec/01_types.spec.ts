@@ -204,7 +204,7 @@ describe('types in Typescript', () => {
                 name = 'Joe';
                 name = 'Sue';
 
-                type Birthdate = string | number;
+                type Birthdate = string | null;
 
                 interface Person {
                     name: string;
@@ -214,7 +214,11 @@ describe('types in Typescript', () => {
 
         });
         it('modifying an array in a non-destructive way', () => {
+            const friends = ['Amy', 'Bill', 'David'];
 
+            const friends2 = ['Sarah', ...friends, 'Zac']; // ... here is the 'spread' operator (spreads out the friends array instead of just showing "array(3)")
+
+            expect(friends2).toEqual(['Sarah', 'Amy', 'Bill', 'David', 'Zac']);
         });
     });
 });
