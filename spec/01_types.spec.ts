@@ -54,6 +54,7 @@ describe('types in Typescript', () => {
             expect(friends).toEqual(['Billy', 'Sean', 'Emma', 'Amy']); // use toEqual when comparing object or arrays
         });
     });
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------
     describe('literals', () => {
 
         it('has string literals', () => {
@@ -111,6 +112,7 @@ describe('types in Typescript', () => {
             expect(false).toBeFalsy();
         });
     });
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------
     describe('array literals', () => {
 
         it('implicitly typed arrays', () => {
@@ -147,6 +149,7 @@ describe('types in Typescript', () => {
             // same as const first = stuffToDo[0];
             expect(first).toBe('Clean garage');
         });
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------
         describe('typed arrays (tuples)', () => {
 
             it('a practical example - not using a typed array', () => {
@@ -219,6 +222,148 @@ describe('types in Typescript', () => {
             const friends2 = ['Sarah', ...friends, 'Zac']; // ... here is the 'spread' operator (spreads out the friends array instead of just showing "array(3)")
 
             expect(friends2).toEqual(['Sarah', 'Amy', 'Bill', 'David', 'Zac']);
+        });
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        describe('object literals', () => {
+            it('have an implicit type', () => {
+                const book = {
+                    title: 'Reality',
+                    author: 'Kingsley',
+                    publisher: 'Random House',
+                    year: 2008
+                };
+
+                // book.publischer = 'OUP';
+            });
+            it('explicit object literals with an interface', () => {
+                interface Book { // first letter in interface name is caps
+                    title: string;
+                    author: string;
+                    publisher: string;
+                    year: number;
+                    subtitle?: string // ? makes this attribute optional
+                };
+
+                const reality: Book = {
+                    title: 'Reality',
+                    author: 'Kingsley',
+                    publisher: 'Random House',
+                    year: 2008,
+                    subtitle: 'Cool stuff you didn\'t know'
+                };
+
+                const hw: Book = {
+                    title: 'High Wierdness',
+                    author: 'Erik Davis',
+                    publisher: 'OUP',
+                    year: 2017,
+                    //subtitle: 'Cool stuff you didn\'t know' // subtitle not needed
+                };
+            });
+            it('expando objects', () => {
+                interface Book {
+                    title: string;
+                    author: string;
+                    publisher: string;
+                    year: number;
+                    subtitle?: string
+                    [key: string]: any // allows you to add any other string properties without being yelled at
+                };
+                const reality: Book = {
+                    title: 'Reality',
+                    author: 'Kingsley',
+                    publisher: 'Random House',
+                    year: 2008,
+                    subtitle: 'Cool stuff you didn\'t know',
+                    reviews: ['Interesting', 'Boring', 'Would buy again'], // allowed because of [key: string]: any
+                    genre: 'Philosophy' // allowed because of [key: string]: any
+                };
+
+                interface Vehicle {
+                    vin: string;
+                    make: string;
+                    model: string;
+                };
+
+                interface Vehicles {
+                    [vin: string]: Vehicle
+                };
+
+                const vehicles: Vehicles = {
+                    '928398298': { vin: '928398298', make: 'Honda', model: 'Pilot' },
+                    '123456789': { vin: '123456789', make: 'Chevy', model: 'Bolt' }
+                };
+
+                expect(vehicles['928398298'].model).toBe('Pilot');
+
+                interface Dictionary<T> {
+                    [key: string]: T
+                };
+
+                const library: Dictionary<Book> = { // "Parametric Polymorphism"
+                    'Reality': reality,
+                    'High Weirdness': { title: 'High Weirdness', author: 'Davis', publisher: 'MIT', year: 2018 }
+                };
+
+                expect(library['High Weirdness'].author).toBe('Davis');
+            });
+            it('structural typing - a.k.a. duck typing', () => { // "if it walks like a duck and it talks like a duck, it's probably a duck"
+
+                interface ThingWithBody { body: string }
+                function logMessage(message: { body: string }) {
+                    console.log(`At ${new Date().toISOString()} you got the following message: ${message.body}`);
+                }
+                logMessage({ body: 'TACOS!!!' });
+
+                const phoneCall = {
+                    from: 'Mom',
+                    body: 'Call me, you slacker!'
+                };
+
+                logMessage(phoneCall);
+            });
+
+        });
+        describe('function literals', () => {
+
+            it('three different ways to delcare them', () => {
+
+
+                // Anonymous functions (Have to be declared before they are used)
+                const subtract = (a: number, b: number): number => a - b;
+                const multiply = function (a: number, b: number): number {
+                    return a * b;
+                }
+
+                expect(add(10, 2)).toBe(12);
+                expect(subtract(10, 2)).toBe(8);
+                expect(multiply(3, 3)).toBe(9);
+                expect(((a: number, b: number) => a / b)(10, 2)).toBe(5); // This is stupid JavaScript tricks
+
+                // Named functions (Can be used before declared)
+                function add(a: number, b: number): number {
+                    return a + b;
+                }
+            });
+            it('a couple quick details about the syntax for arrow functions', () => {
+
+                type MathOp = (a: number, b: number) => number; // a way we can specify a datatype for a function
+
+                const add: MathOp = (a, b) => a + b;
+
+                const division: MathOp = (a, b) => {
+                    if (b === 0) {
+                        throw new Error('Are you trying to pen a black hole???');
+                    } else {
+                        return a / b;
+                    }
+                }
+
+                type Identity = (a: number) => number;
+
+                const mockingBird: Identity = a => a; // just one parameter doesn't need ()
+
+            });
         });
     });
 });
