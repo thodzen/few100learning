@@ -4,15 +4,53 @@
 <head>
     <meta charset="UTF-8">
     <title>Front End Web 100</title>
+    <!-- CSS only -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css"
+          integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX"
+          crossorigin="anonymous">
 </head>
 
 <body>
-    <header>
-        <h1>Front End Web 100 Starter</h1>
-        <h2>Progressive ITU</h2>
+    <header class="container-fluid jumbotron">
+        <h1>Tip Calculator</h1>
+        <p class="subheading">Calculating a Meal Tip with JavaScript</p>
     </header>
-    <main>
-        
+    <main class="container">
+        <section>
+            <div class="form-group"> <label for="amount">Bill Amout</label> <input type="number"
+                       id="amount"
+                       class="form-control"
+                       name="amount">
+            </div>
+        </section>
+        <section>
+            <div class="btn-group"
+                 role="group"
+                 aria-label="Tip Amount">
+                <button type="button"
+                        data-tip=".10"
+                        class="btn btn-secondary tipButton">10%</button>
+                <button type="button"
+                        data-tip=".15"
+                        class="btn btn-secondary tipButton">15%</button>
+                <button type="button"
+                        data-tip=".20"
+                        disabled
+                        class="btn btn-secondary tipButton">20%</button>
+                <button type="button"
+                        data-tip=".25"
+                        class="btn btn-secondary tipButton">25%</button>
+            </div>
+        </section>
+        <section>
+            <ul class="list-group">
+                <li class="list-group-item">Bill Amount $<span id="billAmount">0.00</span></li>
+                <li class="list-group-item">Tip Percentage <span id="tipPercentage">20</span>%</li>
+                <li class="list-group-item">Tip Amount $<span id="tipAmount">0.00</span></li>
+                <li class="list-group-item">Total To Be Paid $<span id="total">0.00</span></li>
+            </ul>
+        </section>
     </main>
 </body>
 
